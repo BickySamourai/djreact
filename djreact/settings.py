@@ -15,7 +15,7 @@ import django_heroku
 from django.core.exceptions import ImproperlyConfigured
 
 
-def get_env_variable(var_name, default_value=None):
+def get_env_variables(var_name, default_value=None):
     try:
         return os.environ[var_name]
     except KeyError:
