@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 
 import Articles from '../components/Articles';
-import axios from 'axios'
+import ApiService from '../services/api'
 
 
 
@@ -13,12 +13,18 @@ export default class ArticleListView extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://127.0.0.1:8000/api/').then(res => {
+       
+
+        ApiService.get().then(response => {
 
             this.setState({
-                articles: res.data
+                articles: response
             });
+
         })
+
+
+
     }
 
 

@@ -1,8 +1,7 @@
 
 import React, { Component } from 'react'
-import axios from 'axios'
 import { Card } from 'antd'
-
+import ApiService from '../services/api'
 
 export default class ArticleDetailView extends Component {
 
@@ -10,17 +9,17 @@ export default class ArticleDetailView extends Component {
         article: {}
     }
 
+    
+
     componentDidMount() {
+       
 
-        const articleID = this.props.match.params.articleID;
-
-        axios.get(`http://127.0.0.1:8000/api/${articleID}`).then(res => {
-
-            console.log(res.data)
+        ApiService.getId(this.props.match.params.articleID).then(response => {
 
             this.setState({
-                article: res.data
+                article: response
             });
+
         })
     }
 
