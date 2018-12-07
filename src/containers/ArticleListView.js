@@ -17,7 +17,10 @@ export default class ArticleListView extends Component {
 
         ApiService.get().then(response => {
 
-            
+            this.setState({
+                articles: response
+            });
+
         })
 
 
