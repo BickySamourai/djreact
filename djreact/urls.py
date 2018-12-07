@@ -23,3 +23,4 @@ urlpatterns = [
     path('api/', include('music.api.urls')),
     re_path('.*', TemplateView.as_view(template_name="index.html"))
 ]
+# index.html du dossier build
