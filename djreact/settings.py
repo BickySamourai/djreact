@@ -12,6 +12,19 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import django_heroku
+from django.core.exceptions import ImproperlyConfigured
+
+
+def get_env_variable(var_name, default_value=None):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        if default_value is None:
+            error_msg = "Set the {} environment variable".format(var_name)
+            raise ImproperlyConfigured(error_msg)
+        else:
+            return default_value
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,13 +33,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%-f#0o)hycf&z(*m6y(ki76t+tix&ast+)hr7-(%c^#b0bnxv7'
+
+
+
+
+# Si il existe une variable d'env SECRET_KEY, alors récuprèe la valeur, sinon elle vaut la valeur par défaut
+# en prod dans heroku on a définit la SECRET_KEY pour la prod
+
+SECRET_KEY = get_env_variables('SECRET_KEY', '%-f#0o)hycf&z(*m6y(ki76t+tix&ast+)hr7-(%c^#b0bnxv7')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ipl-pfe.herokuapp.com']
+#ALLOWED_HOSTS = ['ipl-pfe.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -61,8 +81,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+
 
 ]
 
@@ -141,13 +161,14 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'build/static'),
-)
+#STATICFILES_DIRS = (
+ #   os.path.join(BASE_DIR, 'build/static'),
+#)
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
