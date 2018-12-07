@@ -14,6 +14,9 @@ import os
 import django_heroku
 from django.core.exceptions import ImproperlyConfigured
 
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)
+
 
 def get_env_variables(var_name, default_value=None):
     try:
@@ -34,13 +37,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 
-
-
-
 # Si il existe une variable d'env SECRET_KEY, alors récuprèe la valeur, sinon elle vaut la valeur par défaut
 # en prod dans heroku on a définit la SECRET_KEY pour la prod
 
-SECRET_KEY = get_env_variables('SECRET_KEY', '%-f#0o)hycf&z(*m6y(ki76t+tix&ast+)hr7-(%c^#b0bnxv7')
+SECRET_KEY = get_env_variables(
+    'SECRET_KEY', '%-f#0o)hycf&z(*m6y(ki76t+tix&ast+)hr7-(%c^#b0bnxv7')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -166,9 +167,9 @@ STATIC_URL = '/static/'
 
 
 # Extra places for collectstatic to find static files.
-#STATICFILES_DIRS = (
- #   os.path.join(BASE_DIR, 'build/static'),
-#)
+# STATICFILES_DIRS = (
+#   os.path.join(BASE_DIR, 'build/static'),
+# )
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
