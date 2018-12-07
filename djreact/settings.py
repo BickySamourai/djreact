@@ -44,7 +44,7 @@ SECRET_KEY = get_env_variables(
 DEBUG = True
 
 #ALLOWED_HOSTS = ['ipl-pfe.herokuapp.com']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ipl-pfe.herokuapp.com']
 
 
 # Application definition

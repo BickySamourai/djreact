@@ -8,4 +8,4 @@ TEMPLATE_DEBUG = False
 #DATABASES['default'] = dj_database_url.config()
 
 
-ALLOWED_HOSTS = ['ipl-pfe.herokuapp.com']
+#ALLOWED_HOSTS = ['ipl-pfe.herokuapp.com']
