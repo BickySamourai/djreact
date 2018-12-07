@@ -6,7 +6,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 DATABASES['default'] = dj_database_url.config()
-MIDDLEWARE.update('whitenoise.middleware.WhiteNoiseMiddleware')
+MIDDLEWARE+= ['whitenoise.middleware.WhiteNoiseMiddleware']
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
