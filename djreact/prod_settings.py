@@ -6,6 +6,7 @@ DEBUG = False
 TEMPLATE_DEBUG = False
 
 DATABASES['default'] = dj_database_url.config()
+MIDDLEWARE += ['whitenoise.middleware.WhiteNoiseMiddleware']
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
@@ -13,9 +14,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'build/static'),
 )
-
-
-
 
 
 ALLOWED_HOSTS = ['ipl-pfe.herokuapp.com']

@@ -14,9 +14,6 @@ import os
 import django_heroku
 from django.core.exceptions import ImproperlyConfigured
 
-import mimetypes
-mimetypes.add_type("text/css", ".css", True)
-
 
 def get_env_variables(var_name, default_value=None):
     try:
@@ -82,10 +79,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware'
-
-
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'djreact.urls'
