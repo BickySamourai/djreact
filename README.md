@@ -23,6 +23,6 @@ L'environnement env est un environement virtuel dédié à notre projet
 
 4) Si vous ajouter un nouveau package pip :
 
-pip install monPaquet
+pip install monPaquet <br/>
 pip freeze > requirements.txt
 
