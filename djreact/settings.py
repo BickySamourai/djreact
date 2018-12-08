@@ -49,16 +49,6 @@ ALLOWED_HOSTS = ['ipl-pfe.herokuapp.com']
 
 # Application definition
 
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'corsheaders'
-]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -68,6 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'music'  # add the music
 ]
 
