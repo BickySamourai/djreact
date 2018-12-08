@@ -6,7 +6,7 @@
 
 Ouvrir le terminal 
 
-Pour Windows : 
+Pour Windows : <br/>
 a) Etre à la racine du projet <br/>
 b) yarn install <br/>
 c) pip install virtualenv <br/>
