@@ -7,16 +7,16 @@
 Ouvrir le terminal 
 
 Pour Windows : 
-Etre à la racine du projet\n
-yarn install\n
-pip install virtualenv\n
-cd env/Scripts/
-Faire activate.bat ---> (un dossier env va se créer) et votre terminal sera en mode env
-Revenir dans le dossier racine : cd ../..
-pip install -r requirements.txt
-Lancer le serveur back  : python manage.py runserver
-Lancer le serveur front dans un nouveau terminal : yarn start
-commande deactivate pour partir de l'environnement env
+a) Etre à la racine du projet
+b) yarn install
+c) pip install virtualenv
+d) cd env/Scripts/
+e) Faire activate.bat ---> (un dossier env va se créer) et votre terminal sera en mode env
+f) Revenir dans le dossier racine : cd ../..
+g) pip install -r requirements.txt
+h) Lancer le serveur back  : python manage.py runserver
+i) Lancer le serveur front dans un nouveau terminal : yarn start
+j) commande deactivate pour partir de l'environnement env
  
 L'environnement env est un environement virtuel dédié à notre projet
 
