@@ -16,11 +16,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path, re_path
+from django.conf.urls import url
 from django.views.generic import TemplateView
+from djreact.views import ReactAppView
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('music.api.urls')),
-    re_path('.*', TemplateView.as_view(template_name="index.html"))
+    url(r'^', ReactAppView.as_view()),
+    #re_path('.*', TemplateView.as_view(template_name="index.html")),
 ]
 # index.html du dossier build
