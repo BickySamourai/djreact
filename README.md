@@ -9,7 +9,7 @@ Ouvrir le terminal
 Pour Windows : <br/>
 a) Etre à la racine du projet <br/>
 b) yarn install <br/>
-c) pip install virtualenv <br/>
+c) pip install virtualenv et puis faire virtualenv env <br/>
 d) cd env/Scripts/ <br/>
 e) Faire activate.bat ---> (un dossier env va se créer) et votre terminal sera en mode env <br/>
 f) Revenir dans le dossier racine : cd ../.. <br/>
