@@ -2,9 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import {
-    Form, Input,  Icon,  Button, DatePicker, Select
+    Form, Input,  Icon,  Button, DatePicker, Select, Checkbox
   } from 'antd';
 import * as actions from '../store/actions/auth';
+import axios from 'axios';
   
   const FormItem = Form.Item;
   const Option = Select.Option;
@@ -14,6 +15,10 @@ import * as actions from '../store/actions/auth';
     state = {
       confirmDirty: false,
     };
+    constructor(props){
+      super(props);
+      
+    }
   
     handleSubmit = (e) => {
       e.preventDefault();
@@ -24,10 +29,9 @@ import * as actions from '../store/actions/auth';
                 values.email,
                 values.password,
                 values.confirm,
-                values.lastname,
-                values.firstname,
-                values.categories,
-                values.birthdate);
+                values.last_name,
+                values.first_name,
+                values.categories);
         }
       });
     }
@@ -53,13 +57,37 @@ import * as actions from '../store/actions/auth';
       }
       callback();
     }
+    componentDidMount() {
+       axios.get('http://127.0.0.1:8000/auth/categories/')
+        .then(resp => {
+          console.log(resp.data[0].name)
+          this.setState({
+            categories : resp.data
+          })
+        })
+        .catch(error => {
+            console.log('error')
+            console.log(error)
+        })
+        console.log(this.state.categories)
+    }
   
   
     render() {
+      let categories = this.state.categories;
+      console.log(categories)
+     //categories.map((name)=>console.log(name));
+      let errorMessage = null;
+        if(this.props.error){
+            errorMessage = <p>{this.props.error}</p>
+        }
       const { getFieldDecorator } = this.props.form;
   
   
       return (
+        /*<div> 
+            {errorMessage}
+            {*/
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
                     {getFieldDecorator('userName', {
@@ -105,7 +133,7 @@ import * as actions from '../store/actions/auth';
           </FormItem>
 
           <FormItem>
-            {getFieldDecorator('lastname', {
+            {getFieldDecorator('last_name', {
                 rules: [{
                 required: true,
                 message: 'Please input your name',
@@ -115,7 +143,7 @@ import * as actions from '../store/actions/auth';
             )}
           </FormItem>
           <FormItem>
-            {getFieldDecorator('firstname', {
+            {getFieldDecorator('first_name', {
                 rules: [{
                 required: true,
                 message: 'Please input your firstname',
@@ -131,18 +159,15 @@ import * as actions from '../store/actions/auth';
             ],
           })(
             <Select mode="multiple" placeholder="Please select favourite colors">
-              <Option value="red">Red</Option>
+              <Option value="Rap">Rap</Option>
               <Option value="green">Green</Option>
-              <Option value="blue">Blue</Option>
+          <Option value="blue">Blue</Option>
+          
             </Select>
           )}
         </FormItem>
           <FormItem>
-          {getFieldDecorator('birthdate',{
-            rules: [{ type: 'object', required: true, message: 'Donnez votre date de naissance!' }]
-            })(
-            <DatePicker placeholder = 'Date de naissance' />
-          )}
+          <Checkbox >Compte Spotify</Checkbox>
         </FormItem>
 
           <FormItem>
@@ -153,7 +178,9 @@ import * as actions from '../store/actions/auth';
                     </NavLink>
           </FormItem>
         </Form>
+        //}</div>
       );
+      
     }
   }
   
@@ -168,7 +195,7 @@ import * as actions from '../store/actions/auth';
   
   const mapDispatchToProps = dispatch => {
     return {
-      onAuth: (username, email, password1, password2, lastname, firstname, categories, birthdate ) =>  dispatch(actions.authSignup(username, email, password1, password2, lastname, firstname, categories, birthdate ))
+      onAuth: (username, email, password1, password2, last_name, first_name, categories ) =>  dispatch(actions.authSignup(username, email, password1, password2, last_name, first_name, categories ))
   
     }
   }

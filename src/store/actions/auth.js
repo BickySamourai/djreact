@@ -45,6 +45,7 @@ export const authLogin = (username, password) => {
             password: password
         })
         .then(resp => {
+            console.log(resp)
             const token = resp.data.key;
             authenticated (token);
             /*
@@ -60,26 +61,31 @@ export const authLogin = (username, password) => {
     };
 }
 
-export const authSignup = (username, email, password1, password2, lastname, firstname, categories, birthdate ) => {
+export const authSignup = (username, email, password1, password2, last_name, first_name, categories ) => {
     return dispatch => {  /* dispatch */
         dispatch(authStart()); 
-        axios.post('http://127.0.0.1:8000/rest-auth/registration/',{ /* changer l'url pour nous */ 
+        axios.post('http://127.0.0.1:8000/auth/registration/',{ /* changer l'url pour nous */ 
             username: username,
             email: email,
-            password1: password1,
+            password: password1,
             password2: password2,
-            lastname: lastname,
-            firstname: firstname,
-            birthdate: birthdate
+            last_name: last_name,
+            first_name: first_name,
+            categories: categories
         })
         .then(resp => {
-            const token = resp.data.key;
+            console.log(resp)
+            const token = resp.data.token;
+            localStorage.setItem('user',resp.data.user)
+            localStorage.setItem('categories',resp.data.categories)
             authenticated (token);
             dispatch(authSucces(token));
             dispatch(checkAuthTimeout(3600)); /* we can change the date */
             
         })
         .catch(error => {
+            console.log('error')
+            console.log(error)
             dispatch(authFail(error));
         })
     };

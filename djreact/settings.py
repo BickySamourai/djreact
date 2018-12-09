@@ -61,14 +61,16 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
+    #'allauth.socialaccount',
     'corsheaders',
     'rest_auth',
     'rest_auth.registration',
+    
     'rest_framework.authtoken',
     'rest_framework',
     
     'music', # add the music
+    'authentication',
     
 ]
 SITE_ID = 1
@@ -114,9 +116,9 @@ WSGI_APPLICATION = 'djreact.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'rjngajvc',
-        'USER': 'rjngajvc',
-        'PASSWORD': 'cmpfS2gMwBxa16eo1K8uT1IDWlLG8EVy',
+        'NAME': 'nikbuwyf', #'rjngajvc',
+        'USER': 'nikbuwyf', #'rjngajvc',
+        'PASSWORD': 'Ig4g8TS97rQzRyn7ukACXs3NbQCQMnjb' ,#'cmpfS2gMwBxa16eo1K8uT1IDWlLG8EVy',
         'HOST': 'manny.db.elephantsql.com',
         'PORT': '5432'
     }
@@ -180,6 +182,8 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+
+
 AUTHENTICATION_BACKENDS = (
 
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -194,5 +198,6 @@ AUTHENTICATION_BACKENDS = (
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email' # pareil 1.23 attention mettre withRouter
 
+AUTH_USER_MODEL='authentication.Users'
 # Activate Django-Heroku.
 django_heroku.settings(locals())
