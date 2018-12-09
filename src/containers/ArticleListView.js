@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 
 import Articles from '../components/Articles';
-import ApiService from '../services/api'
+import ApiMusic from '../utils/apiMusic';
 
 
 
@@ -13,18 +13,14 @@ export default class ArticleListView extends Component {
     }
 
     componentDidMount() {
-       
 
-        ApiService.get().then(response => {
+        ApiMusic.get().then(response => {
 
             this.setState({
                 articles: response
             });
 
         })
-
-
-
     }
 
 

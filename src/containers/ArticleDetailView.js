@@ -1,7 +1,7 @@
 
-import React, { Component } from 'react'
-import { Card } from 'antd'
-import ApiService from '../services/api'
+import React, { Component } from 'react';
+import { Card } from 'antd';
+import ApiMusic from '../utils/apiMusic';
 
 export default class ArticleDetailView extends Component {
 
@@ -9,12 +9,9 @@ export default class ArticleDetailView extends Component {
         article: {}
     }
 
-    
-
     componentDidMount() {
        
-
-        ApiService.getId(this.props.match.params.articleID).then(response => {
+        ApiMusic.getId(this.props.match.params.articleID).then(response => {
 
             this.setState({
                 article: response
