@@ -16,6 +16,8 @@ export default class ArticleListView extends Component {
 
         ApiMusic.get().then(response => {
 
+
+
             this.setState({
                 articles: response
             });

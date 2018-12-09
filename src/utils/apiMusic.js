@@ -16,8 +16,8 @@ function getId(id) {
     });
 }
 
-const ApiService = {
+const ApiMusic = {
     get, getId
 }
 
-export default ApiMusics;
+export default ApiMusic;

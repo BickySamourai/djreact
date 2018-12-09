@@ -10,14 +10,18 @@ export default class ArticleDetailView extends Component {
     }
 
     componentDidMount() {
-       
-        ApiMusic.getId(this.props.match.params.articleID).then(response => {
 
-            this.setState({
-                article: response
-            });
+        console.log(this.props)
 
-        })
+        ApiMusic.getId(this.props.match.params.articleID)
+
+            .then(response => {
+
+                this.setState({
+                    article: response
+                });
+
+            })
     }
 
 

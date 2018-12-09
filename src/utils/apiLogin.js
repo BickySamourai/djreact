@@ -1,19 +1,19 @@
 import request from './request';
 
-function createSession(email, password) {
+function createSession(username, password) {
 
     return request({
         url: '/rest-auth/login/',
         method: 'POST',
         data: {
-            email,
+            username,
             password
         }
     });
 }
 
 
-function signUp(username, email, password1, password2, last_name, first_name, categories) {
+function signUp(username, email, password, password2, last_name, first_name, categories) {
 
     return request({
         url: '/auth/registration/',
@@ -21,7 +21,7 @@ function signUp(username, email, password1, password2, last_name, first_name, ca
         data: {
             username,
             email,
-            password1,
+            password,
             password2,
             last_name,
             first_name,
