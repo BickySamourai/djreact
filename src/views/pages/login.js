@@ -12,7 +12,7 @@ import {
    CardBody,
    CardFooter
 } from "reactstrap";
-import * as actions from '../../store/actions/auth';
+import * as actions from '../../redux/actions/auth';
 import {connect} from 'react-redux';
 import {Form} from 'antd'
 
