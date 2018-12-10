@@ -1,55 +1,41 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
-import { Form, Input,  Icon,  Button, DatePicker, Select, Checkbox } from 'antd';
+import {
+    Form, Input,  Icon,  Button, DatePicker, Select, Checkbox
+  } from 'antd';
 import * as actions from '../store/actions/auth';
-import ApiCategories from '../utils/apiCategories';
-import { timingSafeEqual } from 'crypto';
-import axios from 'axios'
+import axios from 'axios';
   
   const FormItem = Form.Item;
   const Option = Select.Option;
 
-  class Signup extends React.Component {
-   
-    
+  const options = [];
 
+
+  
+  class Signup extends React.Component {
     state = {
       confirmDirty: false,
-      categories : {},
     };
+    constructor(props){
+      super(props);
 
-    
-   
-  
-     componentDidMount() {
-       axios.get('http://127.0.0.1:8000/auth/categories/')
-
-      .then(
-          (result) => {
-    
-            this.setState({
-              categories: result.data
-            });
-          },
-          // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-          (error) => {
-            console.log(error)
-          }
-        )
     }
-    
+  
     handleSubmit = (e) => {
-
       e.preventDefault();
-
       this.props.form.validateFieldsAndScroll((err, values) => {
-
-        if (!err) 
-            this.props.onAuth(values.userName, values.email, values.password, values.confirm, values.last_name, values.first_name, values.categories);
-        
+        if (!err) {
+            this.props.onAuth(
+                values.userName, 
+                values.email,
+                values.password,
+                values.confirm,
+                values.last_name,
+                values.first_name,
+                values.categories);
+        }
       });
     }
   
@@ -74,20 +60,48 @@ import axios from 'axios'
       }
       callback();
     }
+    componentDidMount() {
 
+      
+
+
+
+      axios.get('http://127.0.0.1:8000/auth/categories/')
+        .then(resp => {
+         
+        
+
+          resp.data.map((tab, index) => {
+
+            options.push(<Option key={index} value={tab.name}>{tab.name}</Option>);
     
+          })
+
+
+        })
+        .catch(error => {
+            console.log('error')
+            console.log(error)
+        })
+        console.log(this.state.categories)
+    }
   
   
     render() {
-      let categories = this.state.categories;
+
+      
+      /*let categories = this.state.categories;
       console.log(categories)
-    
-     //categories.map((name)=>console.log(name));
+     categories.map((name)=>console.log(name));*/
       let errorMessage = null;
         if(this.props.error){
             errorMessage = <p>{this.props.error}</p>
         }
       const { getFieldDecorator } = this.props.form;
+
+      
+
+      
   
   
       return (
@@ -159,18 +173,39 @@ import axios from 'axios'
             )}
           </FormItem>
           <FormItem>
-          {getFieldDecorator('categories', {
+          {
+            getFieldDecorator('categories', {
             rules: [
               { required: true, message: 'Please select your favourite colors!', type: 'array' },
             ],
           })(
-            <Select mode="multiple" placeholder="Please select favourite colors">
-              <Option value="Rap">Rap</Option>
-              <Option value="green">Green</Option>
-          <Option value="blue">Blue</Option>
+              
           
+
+          
+
+            <Select mode="multiple" placeholder="Please select favourite colors">
+
+           
+
+            {options}
+
             </Select>
-          )}
+
+
+
+          )
+        }
+
+
+
+
+
+
+
+
+
+
         </FormItem>
           <FormItem>
           <Checkbox >Compte Spotify</Checkbox>
@@ -207,4 +242,3 @@ import axios from 'axios'
   }
 
   export default connect(mapStateToProps,mapDispatchToProps)(SignupForm);
-  
