@@ -1,12 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+// import external modules
+import React, { Suspense, lazy } from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// import internal(own) modules
+import registerServiceWorker from "./registerServiceWorker";
+import { store } from "./redux/storeConfig/store";
+import "font-awesome/css/font-awesome.min.css";
+import "./index.scss";
+import Spinner from "./components/spinner/spinner";
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const LazyApp = lazy(() => import("./app/app"));
+
+ReactDOM.render(
+   <Provider store={store}>
+      <Suspense fallback={<Spinner />}>
+        <LazyApp />
+      </Suspense>
+   </Provider>,
+   document.getElementById("root")
+);
+registerServiceWorker();
