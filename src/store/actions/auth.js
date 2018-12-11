@@ -8,6 +8,7 @@ export const authStart = () => {
 }
 
 export const authSucces = token => {
+   
     return {
         type : actionTypes.AUTH_SUCCES,
         token: token
@@ -23,6 +24,8 @@ export const authFail = error => {
 
 export const logout = () => {
     localStorage.removeItem('token'); /* no the token? */
+    localStorage.removeItem('user');
+    localStorage.removeItem('categories');
     localStorage.removeItem('expirationDate');
     return {
         type: actionTypes.AUTH_LOGOUT
@@ -46,18 +49,24 @@ export const authLogin = (username, password) => {
         ApiLogin.createSession(username, password)
       
         .then(response => {
-      
-            const token = response.key;
+            
+            console.log(response)
+            const token = response.token;
+            localStorage.setItem('user',response.user)
+            localStorage.setItem('categories',response.categories)
             authenticated(token);
+            
             /*
             const expirationDate = new Date(new Date().getTime() +3600 * 1000); /*1 hour before the token expiration 
             localStorage.setItem('token',token);
             localStorage.setItem('expirationDate', expirationDate);*/
             dispatch(authSucces(token));
             dispatch(checkAuthTimeout(3600)); // we can change the date */
+            
+            
         })
         .catch(error => {
-            dispatch(authFail(error));
+            dispatch(authFail(error.data));
         })
     };
 }
@@ -82,12 +91,13 @@ export const authSignup = (username, email, password1, password2, last_name, fir
         })
         .catch(error => {
             console.log(error)
-            dispatch(authFail(error));
+            dispatch(authFail(error.data.username));
         })
     };
 }
 
 export const authenticated = token => {
+    console.log(token)
     const expirationDate = new Date(new Date().getTime() +3600 * 1000); /*1 hour before the token expiration */
     localStorage.setItem('token',token);
     localStorage.setItem('expirationDate', expirationDate);
@@ -97,9 +107,8 @@ export const authenticated = token => {
 export const authCheckState = () => {
 
     return dispatch => {
-
         const token = localStorage.getItem('token');
-
+        console.log(token)
         if(token === undefined)
             dispatch(logout());
         

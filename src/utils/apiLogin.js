@@ -3,7 +3,7 @@ import request from './request';
 function createSession(username, password) {
 
     return request({
-        url: '/rest-auth/login/',
+        url: '/auth/login/',
         method: 'POST',
         data: {
             username,

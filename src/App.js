@@ -28,14 +28,16 @@ class App extends Component {
 }
 
 const mapStateToProps = state => { //mapStateToProps : convert state from the store into properties
+  console.log(state)
   return {
     isAuthenticated: state.token !== null // acces to isAuthenticated as a property
   }
 }
 
 const mapDispatchToProps = dispatch => {
+  console.log("1")
   return {
-    onTryAutoSignup: () =>  dispatch(actions.authCheckState)
+    onTryAutoSignup: () =>  dispatch(actions.authCheckState())
 
   }
 }

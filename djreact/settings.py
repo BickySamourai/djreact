@@ -61,10 +61,10 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    #'allauth.socialaccount',
+    'allauth.socialaccount',
     'corsheaders',
-    'rest_auth',
-    'rest_auth.registration',
+    #'rest_auth',
+    #'rest_auth.registration',
     
     'rest_framework.authtoken',
     'rest_framework',
@@ -116,9 +116,9 @@ WSGI_APPLICATION = 'djreact.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'nikbuwyf', #'rjngajvc',
-        'USER': 'nikbuwyf', #'rjngajvc',
-        'PASSWORD': 'Ig4g8TS97rQzRyn7ukACXs3NbQCQMnjb' ,#'cmpfS2gMwBxa16eo1K8uT1IDWlLG8EVy',
+        'NAME': 'nikbuwyf', # 'rdnelrkw', #'rjngajvc',
+        'USER':  'nikbuwyf', #'rdnelrkw', #''rjngajvc',
+        'PASSWORD':  'Ig4g8TS97rQzRyn7ukACXs3NbQCQMnjb' ,#'LSCO97b895uLTyQzirwJy8VlgZKNwlO7', #'cmpfS2gMwBxa16eo1K8uT1IDWlLG8EVy',
         'HOST': 'manny.db.elephantsql.com',
         'PORT': '5432'
     }

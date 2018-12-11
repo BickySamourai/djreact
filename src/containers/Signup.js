@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {NavLink} from 'react-router-dom';
+import {NavLink,  withRouter, Redirect} from 'react-router-dom';
 import {
     Form, Input,  Icon,  Button, DatePicker, Select, Checkbox
   } from 'antd';
@@ -12,20 +12,19 @@ import axios from 'axios';
 
   const options = [];
 
-
   
   class Signup extends React.Component {
     state = {
       confirmDirty: false,
+      checked: false,
+      token: localStorage.getItem('token')
     };
-    constructor(props){
-      super(props);
-
-    }
+    
   
     handleSubmit = (e) => {
       e.preventDefault();
       this.props.form.validateFieldsAndScroll((err, values) => {
+        console.log(this.state.checked)
         if (!err) {
             this.props.onAuth(
                 values.userName, 
@@ -69,10 +68,9 @@ import axios from 'axios';
       axios.get('http://127.0.0.1:8000/auth/categories/')
         .then(resp => {
          
-        
 
           resp.data.map((tab, index) => {
-
+            if(!options[index])
             options.push(<Option key={index} value={tab.name}>{tab.name}</Option>);
     
           })
@@ -85,14 +83,16 @@ import axios from 'axios';
         })
         console.log(this.state.categories)
     }
+    onChange = (e)=> {
+      console.log(e.target.checked)
+      this.setState({ checked:e.target.checked });
+    }
   
   
     render() {
 
       
-      /*let categories = this.state.categories;
-      console.log(categories)
-     categories.map((name)=>console.log(name));*/
+      
       let errorMessage = null;
         if(this.props.error){
             errorMessage = <p>{this.props.error}</p>
@@ -100,14 +100,17 @@ import axios from 'axios';
       const { getFieldDecorator } = this.props.form;
 
       
-
+        console.log(this.state)
       
   
   
       return (
-        /*<div> 
-            {errorMessage}
-            {*/
+        <div>
+        {localStorage.getItem('token') && <Redirect to ='/'/>}
+            {!localStorage.getItem('token') &&
+            <div>
+              {errorMessage}
+              {
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
                     {getFieldDecorator('userName', {
@@ -208,7 +211,7 @@ import axios from 'axios';
 
         </FormItem>
           <FormItem>
-          <Checkbox >Compte Spotify</Checkbox>
+          <Checkbox onChange= {this.onChange} >Compte Spotify</Checkbox>
         </FormItem>
 
           <FormItem>
@@ -219,7 +222,11 @@ import axios from 'axios';
                     </NavLink>
           </FormItem>
         </Form>
-        //}</div>
+       }
+       </div>
+     }
+     
+   </div> 
       );
       
     }
@@ -241,4 +248,4 @@ import axios from 'axios';
     }
   }
 
-  export default connect(mapStateToProps,mapDispatchToProps)(SignupForm);
+  export default withRouter(connect(mapStateToProps,mapDispatchToProps)(SignupForm));

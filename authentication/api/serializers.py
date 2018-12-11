@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.conf import settings
-from django.contrib.auth import get_user_model
-from authentication.models import Categories
+from django.contrib.auth import get_user_model, authenticate
+from authentication.models import Categories, FavoriteCategories
 
 User = get_user_model()
 
@@ -29,8 +29,37 @@ class UserSerializer(serializers.ModelSerializer): #returns what we will need
     class Meta:
         model = User
         fields = ('id', 'username','email','last_name','first_name','premium_account','is_staff')
+  
+
+
+
+
+class LoginSerializer(serializers.ModelSerializer):  
+    class Meta:
+        model = User
+        fields = ('username','password') 
+
+    def validate_username(self,username,password):  
+        print('1')
+        print(username)
+        user = None
+        user=authenticate(username = username, password = password)
+        print(user)
+        if user is None : #try with email
+            user=authenticate(email = username, password = password)
+            print(user)
+        if user is None :
+            raise serializers.ValidationError("Unable to log in with provided credentials.")
+
+        return user    
+            
 
 class CategorieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
+        fields = ('name',)
+
+class FavoriteCategorieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FavoriteCategories
         fields = ('name',)
