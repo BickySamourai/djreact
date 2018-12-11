@@ -44,7 +44,8 @@ SECRET_KEY = get_env_variables(
 DEBUG = True
 
 #ALLOWED_HOSTS = ['ipl-pfe.herokuapp.com']
-ALLOWED_HOSTS = ['ipl-pfe.herokuapp.com']
+ALLOWED_HOSTS = ['ipl-pfe.herokuapp.com',
+                 'localhost:8000', 'accounts.spotify.com']
 
 
 # Application definition
@@ -56,30 +57,31 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    
+
+
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    #'allauth.socialaccount',
+    # 'allauth.socialaccount',
     'corsheaders',
     'rest_auth',
     'rest_auth.registration',
-    
+
     'rest_framework.authtoken',
     'rest_framework',
-    
-    'music', # add the music
-    'authentication',
-    
+    'django_furl',
+    'music',  # add the music
+    'authentication'
+
 ]
 SITE_ID = 1
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -116,9 +118,10 @@ WSGI_APPLICATION = 'djreact.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'nikbuwyf', #'rjngajvc',
-        'USER': 'nikbuwyf', #'rjngajvc',
-        'PASSWORD': 'Ig4g8TS97rQzRyn7ukACXs3NbQCQMnjb' ,#'cmpfS2gMwBxa16eo1K8uT1IDWlLG8EVy',
+        'NAME': 'nikbuwyf',  # 'rjngajvc',
+        'USER': 'nikbuwyf',  # 'rjngajvc',
+        # 'cmpfS2gMwBxa16eo1K8uT1IDWlLG8EVy',
+        'PASSWORD': 'Ig4g8TS97rQzRyn7ukACXs3NbQCQMnjb',
         'HOST': 'manny.db.elephantsql.com',
         'PORT': '5432'
     }
@@ -181,7 +184,10 @@ REST_FRAMEWORK = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
-
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = (
+    '*'
+)
 
 
 AUTHENTICATION_BACKENDS = (
@@ -194,10 +200,13 @@ AUTHENTICATION_BACKENDS = (
 
 )
 
- # à changer suivant la manière dont on veux se connecter (juste login ou aussi avec email)
+# à changer suivant la manière dont on veux se connecter (juste login ou aussi avec email)
 
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email' # pareil 1.23 attention mettre withRouter
+# pareil 1.23 attention mettre withRouter
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 
-AUTH_USER_MODEL='authentication.Users'
+AUTH_USER_MODEL = 'authentication.Users'
 # Activate Django-Heroku.
+
+
 django_heroku.settings(locals())
