@@ -23,8 +23,9 @@ class Home extends Component {
          this.setState({
             tab: res.data
          })
-         //console.log("lol : " + res.data)
-      }) 
+      })
+
+      console.log(this.state.tab);
    }
 
    render() {

@@ -10,6 +10,7 @@ import ErrorLayoutRoute from "../layouts/routes/errorRoutes";
 
 // Main Layout
 const LazyHome = lazy(() => import("../views/home/home"));
+const LazyUploadPage = lazy(() => import("../views/pages/uploadMusic"));
 const LazyEmail = lazy(() => import("../views/email/email"));
 const LazyChat = lazy(() => import("../views/chat/chat"));
 const LazyBlankPage = lazy(() => import("../views/pages/blankPage"));
@@ -36,7 +37,6 @@ class Router extends Component {
                   render={matchprops => (
                      <Suspense fallback={<Spinner />}>
                         <LazyHome {...matchprops} />
-                        {console.log('test')} 
                      </Suspense>
                   )}
                />
@@ -70,6 +70,7 @@ class Router extends Component {
                      </Suspense>
                   )}
                />
+               
                <FullPageLayout
                   exact
                   path="/pages/register"
@@ -79,12 +80,23 @@ class Router extends Component {
                      </Suspense>
                   )}
                />
+               
                <MainLayoutRoutes
                   exact
                   path="/pages/blank-page"
                   render={matchprops => (
                      <Suspense fallback={<Spinner />}>
                         <LazyBlankPage {...matchprops} />
+                     </Suspense>
+                  )}
+               />
+               
+               <MainLayoutRoutes
+                  exact
+                  path="/pages/upload"
+                  render={matchprops => (
+                     <Suspense fallback={<Spinner />}>
+                        <LazyUploadPage {...matchprops} />
                      </Suspense>
                   )}
                />

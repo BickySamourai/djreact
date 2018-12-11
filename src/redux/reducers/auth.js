@@ -1,5 +1,5 @@
 /* take the state and return the piece that you need (in reducers folders)*/
-import * as actionTypes from '../../store/actions/actionTypes';
+import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility'; //to manipulate the state values
 
 const initialState = {

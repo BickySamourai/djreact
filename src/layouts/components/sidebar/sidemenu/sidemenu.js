@@ -6,21 +6,10 @@ import {
    Mail,
    MessageSquare,
    ChevronRight,
-   Aperture,
-   Box,
-   Edit,
-   Grid,
-   Layers,
-   Sliders,
-   Map,
-   BarChart2,
-   Calendar,
-   Copy,
-   Book,
-   CheckSquare,
-   LifeBuoy,
-   Users,
-   Music
+   Music,
+   Activity,
+   ArrowUpCircle,
+   ArrowUp
 } from "react-feather";
 import { NavLink } from "react-router-dom";
 
@@ -57,12 +46,12 @@ class SideMenuContent extends Component {
                </NavLink>
             </SideMenu.MenuMultiItems>
 
-            <SideMenu.MenuSingleItem badgeColor="danger" badgeText="6">
-               <NavLink to="/email" activeclassname="active">
+            <SideMenu.MenuSingleItem name="UploadMusic">
+               <NavLink to="/pages/upload" activeclassname="active">
                   <i className="menu-icon">
-                     <Mail size={18} />
+                     <ArrowUp size={18} />
                   </i>
-                  <span className="menu-item-text">Email</span>
+                  <span className="menu-item-text">Télécharger</span>
                </NavLink>
             </SideMenu.MenuSingleItem>
             <SideMenu.MenuSingleItem>

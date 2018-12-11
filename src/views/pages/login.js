@@ -24,7 +24,7 @@ class Login extends Component {
             this.props.onAuth(values.userName, values.password);
         } 
       });
-      this.props.history.push('/'); 
+      this.props.history.push('/');
    }
 
    render() {
