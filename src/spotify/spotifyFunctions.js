@@ -1,17 +1,11 @@
 
 import Spotify from 'spotify-web-api-js';
-/*import uniq from 'lodash.uniq';
-import flatten from 'lodash.flatten';
-import chunk from 'lodash.chunk';*/
 
 const spotifyApi = new Spotify();
 
 export function redirectUrlToSpotifyForLogin() {
 
-    console.log(process.env)
-
     const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-
     const REDIRECT_URI =
         process.env.NODE_ENV === "production"
             ? process.env.REACT_APP_SPOTIFY_PRODUCTION_REDIRECT_URI
@@ -22,7 +16,11 @@ export function redirectUrlToSpotifyForLogin() {
         "user-read-birthdate",
         "user-read-email",
         "user-read-private",
+        "user-read-recently-played",
         "user-modify-playback-state",
+        "user-read-playback-state",
+        "user-read-currently-playing",
+        "user-read-recently-played",
         "user-library-read",
         "user-library-modify",
         "playlist-read-private",
@@ -86,10 +84,61 @@ export async function getUserPlaylists() {
     }
 }
 
+export async function getSpotifyUserInfo() {
+    //track_number is what track number a song is on the album
+
+    try {
+        const userInfo = await spotifyApi.getMe();
+        return userInfo;
+
+    }
+    catch (err) {
+        console.error('Error: getSpotifyUserInfo in spotifyFunctions', err);
+        console.error(err.stack);
+    }
+}
+
+export async function getUserDevices() {
+    //track_number is what track number a song is on the album
+
+    try {
+        const userDevices = await spotifyApi.getMyDevices();
+        return userDevices;
+
+    }
+    catch (err) {
+        console.error('Error:  getUserDevices() in spotifyFunctions', err);
+        console.error(err.stack);
+    }
+}
+
+export async function playSongOnDevice(deviceId, contextUri) {
+    //track_number is what track number a song is on the album
+
+    const tab = [];
+    tab.push(contextUri)
+    console.log(tab)
+
+    try {
+        const userDevices = await spotifyApi.play({
+            device_id: deviceId,
+            uris: tab
+        });
+        console.log(userDevices)
+        return userDevices;
+
+    }
+    catch (err) {
+        console.error('Error:  playSongOnDevice(deviceId, contextUri) in spotifyFunctions', err);
+        console.error(err.stack);
+    }
+}
+
 export async function getSimplePlaylistTracks(playlistId) {
     //track_number is what track number a song is on the album
     try {
         const tracks = await spotifyApi.getPlaylistTracks(playlistId);
+
         //getPlaylistTracks has a bunch of meta data about the playlist we don't need
         //once again items is the property we really want. It's an array of tracks
         const simpleTracks = tracks.items.map((trackObject, index) => {
@@ -108,7 +157,7 @@ export async function getSimplePlaylistTracks(playlistId) {
                 //albumId: album.id,
                 albumName: album.name,
                 trackUri: track.uri,
-                playerTag: ['Ecouter']
+                playerTag: ['Ecouter'],
                 //albumUri: album.uri,
                 //artistId: artist.id,
 

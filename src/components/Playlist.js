@@ -1,23 +1,11 @@
 import React, { Component } from 'react';
-
-import { List, Avatar } from 'antd';
-
 import * as SpotifyFunctions from '../spotify/spotifyFunctions.js';
-
-import * as spotifyPlayer from '../spotify/spotifyPlayer';
+import { Table, Tag } from 'antd';
+import { Button, Icon } from 'antd';
 import { Select } from 'antd';
+import './Playlist.css';
 
-import Iframe from 'react-iframe'
-import { Table, Divider, Tag } from 'antd';
-
-const Option = Select.Option;
-
-
-
-
-
-// titre, artiste(s) album, player
-
+const { Option, OptGroup } = Select;
 const columns = [{
     title: 'Titre',
     dataIndex: 'trackName',
@@ -32,99 +20,98 @@ const columns = [{
     dataIndex: 'albumName',
     key: 'albumName',
 }, {
-    title: 'Player Tag',
+    title: 'Player',
     key: 'playerTag',
     dataIndex: 'playerTag',
-    render: tags => (
+    render: (tags, track) => (
         <span>
-            {tags.map(tag => <Tag color="blue" key={tag}>{tag}</Tag>)} {/* onClick={handleClick} */}
-        </span>
+            {tags.map(tag => <Tag color="blue" key={tag} onClick={
+                async () => await SpotifyFunctions.playSongOnDevice(localStorage.getItem('deviceId'), track.trackUri)
+            }>{tag}</Tag>)
+            }
+        </span >
     ),
 }];
 
 
-let data = [{
-    key: '0',
-    trackName: 'John Brown',
-    artistName: 32,
-    albumName: 'New York No. 1 Lake Park',
-    playerTag: ['Ecouter'],
-}, {
-    key: '1',
-    trackName: 'Jim Green',
-    artistName: 42,
-    albumName: 'London No. 1 Lake Park',
-    playerTag: ['Ecouter'],
-}, {
-    key: '2',
-    trackName: 'Joe Black',
-    artistName: 32,
-    albumName: 'Sidney No. 1 Lake Park',
-    playerTag: ['Ecouter'],
-}];
-
-
+let data = [];
 
 class Playlist extends Component {
-
-
-    componentWillReceiveProps(newProps) {
-        console.log(newProps)
-    }
 
     constructor(props) {
         super(props)
 
         this.classes = props;
-        this.state = {
-            addRelatedDiscography: "false",
-            playlists: [],
-            chosenPlaylistIndex: 0,
-            chosenPlaylistName: 'Choose a playlist',
-            chosenPlaylistId: null,
-            anchorElement: null
-        }
+
+        // mettre dans ENVVVVVVVVVVVVVVVV
 
         this.state = {
-            token: "BQDjZHJjPEVAVQMwC3OU33GdGTTaaeFjZPVBkMlcE265k3v5GA4zmhElNVkKv71TUUa0ipI-Q4HsoAQ63klwRenwya4XbhFSJ0JB7tUJ7Kt_Th2QdhEv-grJFb7505aJbX8YtsseL-HaXSMnU_Nas3us64nL34vYczrAoyzF",
+            token: process.env.REACT_APP_SPOTIFY_WEB_PLAYBACK_ACCESS_TOKEN,
             deviceId: "",
             loggedIn: false,
-            error: "",
-            trackName: "Track Name",
-            artistName: "Artist Name",
-            albumName: "Album Name",
-            playing: false,
-            position: 0,
-            duration: 0,
+            playing: false
         };
-
-
     }
 
     async componentDidMount() {
 
-        // pour les playlists
         await SpotifyFunctions.setAccessToken(this.props.accessToken);
 
         const playlists = await SpotifyFunctions.getUserPlaylists();
-
-
-        const children = [];
+        const devices = await SpotifyFunctions.getUserDevices();
+        const playlistOptions = [];
+        const smartphoneOptions = [];
+        const computerOptions = [];
 
         playlists.map((tab, index) => {
 
-            children.push(<Option key={index} value={tab.id}>{tab.playlistName}</Option>);
+            playlistOptions.push(<Option key={index} value={tab.id}>{tab.playlistName}</Option>);
 
         });
 
-        this.setState({ playlists: playlists, options: children, data: data });
+        Object.keys(devices).forEach((key) => {
 
-        this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 10000);
+            devices[key].map((tab, index) => {
 
+                if (tab.type === 'Computer')
+                    computerOptions.push(<Option key={index} value={tab.id}>{tab.name}</Option>)
 
+                if (tab.type === 'Smartphone')
+                    smartphoneOptions.push(<Option key={index} value={tab.id}>{tab.name}</Option>)
+
+            })
+        })
+
+        this.setState({ playlists: playlists, options: playlistOptions, data: data, computerOptions: computerOptions, smartphoneOptions: smartphoneOptions });
+        this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
+    }
+
+    handleChangePlaylist = async (playlistId) => {
+        const tracks = await SpotifyFunctions.getSimplePlaylistTracks(playlistId);
+        this.setState({ data: tracks })
+    }
+
+    handleChangeDevices = async (deviceId) => {
+        localStorage.setItem('deviceId', deviceId); // obligé de stocker dans localstorage car pas accès au state en dehors du composant
     }
 
 
+    checkForPlayer() {
+
+        const { token } = this.state;
+
+        if (window.Spotify !== null) {
+
+            this.player = new window.Spotify.Player({
+                name: "Spotify Player du Projet IPL",
+                getOAuthToken: cb => { cb(token); },
+            });
+
+            clearInterval(this.playerCheckInterval);
+            this.createEventHandlers();
+            this.player.connect();
+        }
+    }
 
     createEventHandlers() {
         this.player.on('initialization_error', e => { console.error(e); });
@@ -135,115 +122,118 @@ class Playlist extends Component {
         this.player.on('account_error', e => { console.error(e); });
         this.player.on('playback_error', e => { console.error(e); });
 
-        // Playback status updates
-        // quand on met sur pause par ex
-        this.player.on('player_state_changed', state => { console.log(state); });
+        // Quand on met sur pause par ex
+        this.player.on('player_state_changed', state => {
+            this.onStateChanged(state);
+        });
 
-        // Ready
         this.player.on('ready', data => {
-            let { device_id } = data;
             console.log("Let the music play on!");
-            this.setState({ deviceId: device_id });
         });
     }
 
 
-    checkForPlayer() {
-        const { token } = this.state;
 
-        if (window.Spotify !== null) {
-            this.player = new window.Spotify.Player({
-                name: "Matt's Spotify Player",
-                getOAuthToken: cb => { cb(token); },
+    onStateChanged(state) {
+        // Si on n'écoute plus la musique l'état vaut null
+        if (state !== null) {
+            const {
+                current_track: currentTrack,
+            } = state.track_window;
+
+            const trackName = currentTrack.name;
+            const albumName = currentTrack.album.name;
+            const artistName = currentTrack.artists
+                .map(artist => artist.name)
+                .join(", ");
+            const playing = !state.paused;
+            this.setState({
+                trackName,
+                albumName,
+                artistName,
+                playing
             });
-
-            clearInterval(this.playerCheckInterval);
-            this.createEventHandlers();
-
-            // finally, connect!
-            this.player.connect();
         }
     }
-
-    handleChange = async (playlistId) => {
-        const tracks = await SpotifyFunctions.getSimplePlaylistTracks(playlistId);
-
-
-
-        this.setState({ data: tracks })
-    }
-
-
 
     onChange(pagination, filters, sorter) {
         console.log('params', pagination, filters, sorter);
     }
 
+    onPrevClick() {
+        this.player.previousTrack();
+    }
 
+    onPlayClick() {
+        this.player.togglePlay();
+    }
 
+    onNextClick() {
+        this.player.nextTrack();
+    }
 
     render() {
 
-        //this.parcourir(this.state.playlists);
-        //{ this.state.playlists &&  }
-
         const {
-            token,
-            loggedIn,
+
+            data,
             artistName,
             trackName,
             albumName,
-            error,
-            position,
-            duration,
             playing,
         } = this.state;
 
-
-
-
-        const {
-            data
-        } = this.state;
-
-
-
-
         return (
-
-
 
             <React.Fragment>
 
-
-
                 <p>Mes playlists Spotify</p>
-
-
                 <Select
-                    mode="tags"
-                    style={{ width: '100%' }}
-                    placeholder="Tags Mode"
-                    onChange={this.handleChange}
+                    defaultValue="Playlist(s)"
+                    style={{ width: '25%' }}
+                    onChange={this.handleChangePlaylist}
                 >
                     {this.state.options}
                 </Select>
 
-                {this.state.data &&
-                    <Table columns={columns} dataSource={data} onChange={this.onChange} />
+
+                <p className="title_2">Veuillez sélectionner l'appareil sur lequel vous souhaitez écouter une musique</p>
+
+                <Select
+                    defaultValue="Appareil(s)"
+                    style={{ width: '25%', marginTop: '0.5%' }}
+                    onChange={this.handleChangeDevices}
+                >
+                    <OptGroup label="Ordinateur(s)">
+                        {this.state.computerOptions}
+                    </OptGroup>
+                    <OptGroup label="Smartphone(s)">
+                        {this.state.smartphoneOptions}
+                    </OptGroup>
+                </Select>
+
+                {
+                    this.state.data &&
+                    <Table columns={columns} dataSource={data} onChange={this.onChange} style={{ marginTop: '2%' }} />
                 }
 
-                <div>
+                <p>Artist: {artistName}</p>
+                <p>Track: {trackName}</p>
+                <p>Album: {albumName}</p>
 
 
-                    <iframe src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" width="300" height="380" allowtransparency="true" allow="encrypted-media"></iframe>
-                </div>
+                <Button.Group>
+                    <Button type="primary" onClick={() => this.onPrevClick()}>
+                        <Icon type="left" />Précédent
+                    </Button>
+                    <Button onClick={() => this.onPlayClick()}>{playing ? "Pause" : "Play"}</Button>
+                    <Button type="primary" onClick={() => this.onNextClick()}>
+                        Suivant<Icon type="right" />
+                    </Button>
+                </Button.Group>
 
-            </React.Fragment>
+            </React.Fragment >
         )
-
-
-
     }
 }
 

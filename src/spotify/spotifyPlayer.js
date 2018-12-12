@@ -1,8 +1,3 @@
-
-
-
-
-
 export async function waitForSpotifyWebPlaybackSDKToLoad() {
 
     return new Promise(resolve => {
