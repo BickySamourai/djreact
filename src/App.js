@@ -6,16 +6,25 @@ import 'antd/dist/antd.css';
 import CustomLayout from './containers/Layout';
 import * as actions from './store/actions/auth';
 
+
 class App extends Component {
 
-  componentDidMount(){
+  constructor(props) {
+    super(props)
+
+
+  }
+
+  componentDidMount() {
     this.props.onTryAutoSignup();
+
+
   }
   render() {
     return (
       <div>
         <Router>
-          <CustomLayout {...this.props }>  
+          <CustomLayout {...this.props}>
             <BaseRouter />
           </CustomLayout>
 
@@ -35,9 +44,9 @@ const mapStateToProps = state => { //mapStateToProps : convert state from the st
 
 const mapDispatchToProps = dispatch => {
   return {
-    onTryAutoSignup: () =>  dispatch(actions.authCheckState)
+    onTryAutoSignup: () => dispatch(actions.authCheckState)
 
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps) (App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
