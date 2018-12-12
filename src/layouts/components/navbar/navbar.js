@@ -37,8 +37,11 @@ import userImage from "../../../assets/img/portrait/small/avatar-s-1.png";
 import userImage2 from "../../../assets/img/portrait/small/avatar-s-2.png";
 import userImage3 from "../../../assets/img/portrait/small/avatar-s-3.png";
 import userImage4 from "../../../assets/img/portrait/small/avatar-s-4.png";
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import * as actions from '../../../redux/actions/auth';
 
-class ThemeNavbar extends Component {
+class ThemeNavbar extends React.Component {
    handleClick = e => {
       this.props.toggleSidebarMenu("open");
    };
@@ -57,6 +60,7 @@ class ThemeNavbar extends Component {
    }
 
    render() {
+      console.log(this.props)
       return (
          <Navbar className="navbar navbar-expand-lg navbar-light bg-faded">
             <div className="container-fluid px-0">
@@ -253,7 +257,7 @@ class ThemeNavbar extends Component {
                                  </DropdownItem>
                               </Link>
                               <Link to="/pages/login" className="p-0">
-                                 <DropdownItem>
+                                 <DropdownItem onClick = {this.props.logout} >
                                     <LogOut size={16} className="mr-1" /> Logout
                                  </DropdownItem>
                               </Link>
@@ -268,4 +272,11 @@ class ThemeNavbar extends Component {
    }
 }
 
-export default ThemeNavbar;
+const mapDispatchToProps = dispatch => {
+   return {
+      logout: () => dispatch(actions.logout())
+ 
+   }
+ }
+ 
+ export default withRouter(connect(null,mapDispatchToProps)(ThemeNavbar));

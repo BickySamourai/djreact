@@ -49,7 +49,6 @@ ALLOWED_HOSTS = ['ipl-pfe.herokuapp.com']
 
 # Application definition
 
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -57,10 +56,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
+    
+    
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'corsheaders',
-    'music'  # add the music
+    'rest_auth',
+    'rest_auth.registration',
+    
+    'rest_framework.authtoken',
+    'rest_framework',
+    
+    'music', # add the music
+    'authentication',
+    
 ]
+SITE_ID = 1
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -103,9 +116,9 @@ WSGI_APPLICATION = 'djreact.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'rjngajvc',
-        'USER': 'rjngajvc',
-        'PASSWORD': 'cmpfS2gMwBxa16eo1K8uT1IDWlLG8EVy',
+        'NAME': 'rdnelrkw' , #'nikbuwyf' , #'rjngajvc',
+        'USER':  'rdnelrkw' , #'rdnelrkw', #''rjngajvc',
+        'PASSWORD':  'LSCO97b895uLTyQzirwJy8VlgZKNwlO7' ,#'Ig4g8TS97rQzRyn7ukACXs3NbQCQMnjb' , #'cmpfS2gMwBxa16eo1K8uT1IDWlLG8EVy',
         'HOST': 'manny.db.elephantsql.com',
         'PORT': '5432'
     }
@@ -169,5 +182,22 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+
+
+AUTHENTICATION_BACKENDS = (
+
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail / allows login with email
+    'allauth.account.auth_backends.AuthenticationBackend'
+
+)
+
+ # à changer suivant la manière dont on veux se connecter (juste login ou aussi avec email)
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email' # pareil 1.23 attention mettre withRouter
+
+AUTH_USER_MODEL='authentication.Users'
 # Activate Django-Heroku.
 django_heroku.settings(locals())

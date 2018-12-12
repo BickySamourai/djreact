@@ -1,9 +1,9 @@
 /* take the state and return the piece that you need (in reducers folders)*/
-import * as actionTypes from '../../store/actions/actionTypes';
+import * as actionTypes from '../../redux/actions/actionTypes';
 import { updateObject } from '../utility'; //to manipulate the state values
 
 const initialState = {
-    token: null,
+    token: localStorage.getItem('token'),
     error: null,
     loading: false
 }
@@ -37,6 +37,7 @@ const authLogout = (state,action) =>{
 }
 
 const reducer = (state = initialState,action) => {
+    console.log(action.type)
     switch(action.type){
         case actionTypes.AUTH_START: return authStart(state,action);
         case actionTypes.AUTH_SUCCES: return authSucces(state,action);

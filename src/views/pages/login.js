@@ -1,6 +1,6 @@
 // import external modules
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter,Redirect } from "react-router-dom";
 import {
    Row,
    Col,
@@ -10,53 +10,63 @@ import {
    Label,
    Card,   
    CardBody,
-   CardFooter
+   CardFooter,Alert
 } from "reactstrap";
 import * as actions from '../../redux/actions/auth';
 import {connect} from 'react-redux';
-import {Form} from 'antd'
+import {Form, Icon} from 'antd'
+const FormItem = Form.Item;
 
-class Login extends Component {
-   handleSubmit = (e) => {
+class Login extends React.Component {
+
+    handleSubmit = (e) => {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
             this.props.onAuth(values.userName, values.password);
-        } 
+        }
       });
-      this.props.history.push('/'); 
-   }
+      
+    }
 
    render() {
+      let errorMessage = null;
+      console.log(this.props)
+        if(this.props.error){
+          console.log(this.props.error)
+            errorMessage = <Alert color='danger'>{this.props.error}</Alert>
+        }
       const { getFieldDecorator } = this.props.form;
+      console.log(localStorage.getItem('token'))
 
       return (
+         <div> 
+            {this.props.token && <Redirect to =''/>}
+            {!this.props.token &&
          <div className="container">
             <Row className="full-height-vh">
                <Col xs="12" className="d-flex align-items-center justify-content-center">
                   <Card className="gradient-indigo-purple text-center width-400">
                      <CardBody>
                         <h2 className="white py-4">Login</h2>
+                        {errorMessage}
+                        
                         <Form onSubmit={this.handleSubmit} className="pt-2">
-                           <FormGroup>
-                              <Col md="12">
-                                 {getFieldDecorator('userName', {
-                                 rules: [{ required: true, message: 'Please input your username!' }],
-                                 })(
-                                 <Input type="email" className="form-control" name="inputEmail" id="inputEmail" placeholder="Email" required />
-                                 )}
-                              </Col>
-                           </FormGroup>
+                        <FormItem>
+                          {getFieldDecorator('userName', {
+                          rules: [{ required: true, message: 'Entrez votre login ou email!' }],
+                          })(
+                          <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Login" />
+                          )}
+                      </FormItem>
 
-                           <FormGroup>
-                              <Col md="12">
-                                 {getFieldDecorator('password', {
-                                 rules: [{ required: true, message: 'Please input your Password!' }],
-                                 })(
-                                 <Input type="password" className="form-control" name="inputPass" id="inputPass"  placeholder="Password" required />
-                                 )}
-                              </Col>
-                           </FormGroup>
+                      <FormItem>
+                          {getFieldDecorator('password', {
+                          rules: [{ required: true, message: 'Entrez votre mot de passe!' }],
+                          })(
+                          <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Mot de passe" />
+                          )}
+                      </FormItem>
 
                            <FormGroup>
                               <Col md="12">
@@ -84,6 +94,8 @@ class Login extends Component {
                </Col>
             </Row>
          </div>
+         }
+         </div>
       );
    }
 }
@@ -91,9 +103,11 @@ class Login extends Component {
 const LoginForm = Form.create()(Login);
 
 const mapStateToProps = state => { //mapStateToProps : convert state from the store into properties
+   console.log(state)
   return {
-    loading: state.loading,
-    error: state.error
+    loading: state.reducer.loading,
+    error: state.reducer.error,
+    token: state.reducer.token
   }
 }
 
@@ -104,4 +118,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(LoginForm);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(LoginForm));

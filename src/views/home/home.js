@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import {Redirect, withRouter} from 'react-router-dom'
 import {
    Card,
    CardImg,
@@ -6,8 +7,9 @@ import {
    Row,
    Col
 } from "reactstrap";
-import MusicPlayer from 'react-responsive-music-player'
-import axios from 'axios'
+import MusicPlayer from 'react-responsive-music-player';
+import axios from 'axios';
+import {connect} from 'react-redux';
 
 class Home extends Component {
    
@@ -28,10 +30,12 @@ class Home extends Component {
    }
 
    render() {
+      console.log(this.props)
       return (         
          <Fragment>
             <Row>
-            {
+               {!this.props.token && <Redirect to ='/pages/login'/>}
+               {this.props.token &&
                this.state.tab.map(function(item, index){
                     return <Col sm="12" md="3">
                     <Card>
@@ -48,4 +52,11 @@ class Home extends Component {
       );
    }
 }
-export default Home;
+
+const mapStateToProps = state => { //mapStateToProps : convert state from the store into properties
+   console.log(state)
+  return {
+    token: state.reducer.token
+  }
+}
+export default withRouter(connect(mapStateToProps)(Home));
