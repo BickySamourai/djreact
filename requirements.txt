@@ -9,7 +9,6 @@ dj-database-url==0.5.0
 Django==2.1.4
 django-allauth==0.38.0
 django-cors-headers==2.4.0
-django-furl==0.1.0
 django-heroku==0.3.1
 django-rest-auth==0.9.3
 djangorestframework==3.9.0
@@ -31,6 +30,7 @@ pytz==2018.7
 requests==2.20.1
 requests-oauthlib==1.0.0
 six==1.11.0
+spotipy==2.4.4
 urllib3==1.24.1
 virtualenv==16.1.0
 virtualenv-clone==0.4.0
