@@ -71,6 +71,8 @@ INSTALLED_APPS = [
     
     'music', # add the music
     'authentication',
+    'chat',
+    'channels',
     
 ]
 SITE_ID = 1
@@ -108,7 +110,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'djreact.wsgi.application'
+ASGI_APPLICATION = 'djreact.routing.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -172,13 +183,13 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'build/static'),
 )
 
-REST_FRAMEWORK = {
+"""REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
-}
+}"""
 
 CORS_ORIGIN_ALLOW_ALL = True
 

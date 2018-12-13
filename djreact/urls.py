@@ -19,12 +19,14 @@ from django.urls import include, path, re_path
 from django.conf.urls import url
 from django.views.generic import TemplateView
 from djreact.views import ReactAppView
+
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('chat/', include('chat.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('rest-auth/', include('rest_auth.urls')),
     path('auth/', include('authentication.api.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
-    path('admin/', admin.site.urls),
     path('api/', include('music.api.urls')),
     url(r'^', ReactAppView.as_view()),
     #re_path('.*', TemplateView.as_view(template_name="index.html")),

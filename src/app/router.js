@@ -40,7 +40,7 @@ class Router extends Component {
                />
                <MainLayoutRoutes
                   exact
-                  path="/chat" 
+                  path="/chat/:id?" 
                   render={matchprops => (
                      <Suspense fallback={<div>Loading ...</div>}>
                         <LazyChat {...matchprops} />
