@@ -10,7 +10,6 @@ import ErrorLayoutRoute from "../layouts/routes/errorRoutes";
 
 // Main Layout
 const LazyHome = lazy(() => import("../views/home/home"));
-const LazyEmail = lazy(() => import("../views/email/email"));
 const LazyChat = lazy(() => import("../views/chat/chat"));
 const LazyBlankPage = lazy(() => import("../views/pages/blankPage"));
 
@@ -36,23 +35,12 @@ class Router extends Component {
                   render={matchprops => (
                      <Suspense fallback={<Spinner />}>
                         <LazyHome {...matchprops} />
-                        {console.log('test')} 
-                     </Suspense>
-                  )}
-               />
-              
-               <MainLayoutRoutes
-                  exact
-                  path="/email"
-                  render={matchprops => (
-                     <Suspense fallback={<Spinner />}>
-                        <LazyEmail {...matchprops} />
                      </Suspense>
                   )}
                />
                <MainLayoutRoutes
                   exact
-                  path="/chat"
+                  path="/chat" 
                   render={matchprops => (
                      <Suspense fallback={<div>Loading ...</div>}>
                         <LazyChat {...matchprops} />

@@ -1,8 +1,9 @@
 from django.urls import path
 
-from .views import MusicListView, MusicDetailView
+from .views import MusicListView, MusicDetailView, MusicFilterView
 
 urlpatterns = [
     path('', MusicListView.as_view()),
-    path('<pk>', MusicDetailView.as_view())
+    path('search/<music_name>', MusicFilterView.as_view()),
+    
 ]

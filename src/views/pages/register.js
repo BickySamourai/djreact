@@ -1,3 +1,6 @@
+import 'antd/es/select/style/index.css';
+import 'antd/es/form/style/index.css';
+
 // import external modules
 import React, { Component } from "react";
 import { NavLink, withRouter, Redirect } from "react-router-dom";
@@ -82,7 +85,7 @@ class Register extends Component {
 
             resp.data.map((tab, index) => {
                if (!options[index])
-                  options.push(<option key={index} value={tab.name}>{tab.name}</option>);
+                  options.push(<Option key={index} value={tab.name}>{tab.name}</Option>);
 
             })
 
@@ -194,7 +197,7 @@ class Register extends Component {
                                        })(
 
 
-                                          <Select multiple placeholder="Catégories préférées" style={{width:'100%'}}>
+                                          <Select mode="multiple" placeholder="Catégories préférées" style={{width:'100%'}}>
                                              
                                              {options}
 
@@ -204,22 +207,13 @@ class Register extends Component {
 
                                        )
                                     }
-                                    
-
-
-
-
-
-
-
-
 
                                  </FormItem>
                                  <FormGroup>
                                     <Col md="12">
                                        <Button type="submit" color="danger" block className="btn-pink btn-raised">
                                           Envoyer
-                                 </Button>
+                                       </Button>
                                     </Col>
                                  </FormGroup>
 

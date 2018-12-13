@@ -1,5 +1,7 @@
 // import external modules
-import React, { Component } from "react";
+import 'antd/es/form/style/index.css';
+
+import React from "react";
 import { NavLink, withRouter,Redirect } from "react-router-dom";
 import {
    Row,
@@ -7,7 +9,6 @@ import {
    Input,
    FormGroup,
    Button,
-   Label,
    Card,   
    CardBody,
    CardFooter,Alert
@@ -31,13 +32,10 @@ class Login extends React.Component {
 
    render() {
       let errorMessage = null;
-      console.log(this.props)
         if(this.props.error){
-          console.log(this.props.error)
             errorMessage = <Alert color='danger'>{this.props.error}</Alert>
         }
       const { getFieldDecorator } = this.props.form;
-      console.log(localStorage.getItem('token'))
 
       return (
          <div> 
@@ -57,7 +55,7 @@ class Login extends React.Component {
                           rules: [{ required: true, message: 'Entrez votre login ou email!' }],
                           })(
                           <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Login" />
-                          )}
+                          )} 
                       </FormItem>
 
                       <FormItem>
@@ -79,12 +77,7 @@ class Login extends React.Component {
                      </CardBody>
 
                      <CardFooter>
-                        <div className="float-left">
-                           <NavLink to="/pages/forgot-password" className="text-white">
-                              Mot de passe oublié ?
-                           </NavLink>
-                        </div>
-                        <div className="float-right">
+                        <div className="float-center">
                            <NavLink to="/pages/register" className="text-white">
                               S'enregistrer
                            </NavLink>
@@ -103,7 +96,6 @@ class Login extends React.Component {
 const LoginForm = Form.create()(Login);
 
 const mapStateToProps = state => { //mapStateToProps : convert state from the store into properties
-   console.log(state)
   return {
     loading: state.reducer.loading,
     error: state.reducer.error,

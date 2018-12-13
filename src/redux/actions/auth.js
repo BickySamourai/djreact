@@ -25,9 +25,13 @@ export const authFail = error => {
 }
 
 export const logout = () => {
-    console.log('2')
     localStorage.removeItem('token'); /* no the token? */
-    localStorage.removeItem('user');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('user_lastname');
+    localStorage.removeItem('user_firstname');
+    localStorage.removeItem('user_email');
+    localStorage.removeItem('user_premium_account');
+    localStorage.removeItem('user_staff');
     localStorage.removeItem('categories');
     localStorage.removeItem('expirationDate');
     return {
@@ -53,10 +57,14 @@ export const authLogin = (username, password) => {
       
         .then(response => {
             
-            console.log(response)
             const token = response.token;
-            localStorage.setItem('user',response.user)
-            localStorage.setItem('categories',response.categories)
+            localStorage.setItem('user_id',response.user.id);
+            localStorage.setItem('user_lastname',response.user.last_name);
+            localStorage.setItem('user_firstname',response.user.first_name);
+            localStorage.setItem('user_email',response.user.email);
+            localStorage.setItem('user_premium_account',response.user.premium_account);
+            localStorage.setItem('user_staff',response.user.is_staff);
+            localStorage.setItem('categories',response.categories);
             authenticated(token);
             
             /*
@@ -84,9 +92,13 @@ export const authSignup = (username, email, password1, password2, last_name, fir
         ApiLogin.signUp(username, email, password1, password2, last_name, first_name, categories)
 
         .then(response => {
-            console.log(response)
             const token = response.token;
-            localStorage.setItem('user',response.user)
+            localStorage.setItem('user_id',response.user.id);
+            localStorage.setItem('user_lastname',response.user.last_name);
+            localStorage.setItem('user_firstname',response.user.first_name);
+            localStorage.setItem('user_email',response.user.email);
+            localStorage.setItem('user_premium_account',response.user.premium_account);
+            localStorage.setItem('user_staff',response.user.is_staff);
             localStorage.setItem('categories',response.categories)
             authenticated(token);
             dispatch(authSucces(token));
@@ -101,7 +113,6 @@ export const authSignup = (username, email, password1, password2, last_name, fir
 }
 
 export const authenticated = token => {
-    console.log(token)
     const expirationDate = new Date(new Date().getTime() +3600 * 1000); /*1 hour before the token expiration */
     localStorage.setItem('token',token);
     localStorage.setItem('expirationDate', expirationDate);
@@ -112,7 +123,6 @@ export const authCheckState = () => {
 
     return dispatch => {
         const token = localStorage.getItem('token');
-        console.log(token)
         if(token === undefined)
             dispatch(logout());
         
