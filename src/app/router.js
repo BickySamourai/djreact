@@ -11,6 +11,8 @@ import ErrorLayoutRoute from "../layouts/routes/errorRoutes";
 // Main Layout
 const LazyHome = lazy(() => import("../views/home/home"));
 const LazyChat = lazy(() => import("../views/chat/chat"));
+const LazySpotify = lazy(() => import("../views/spotify/SpotifyContainer"));
+
 const LazyBlankPage = lazy(() => import("../views/pages/blankPage"));
 
 // Full Layout
@@ -40,14 +42,24 @@ class Router extends Component {
                />
                <MainLayoutRoutes
                   exact
-                  path="/chat/:id?" 
+                  path="/spotify/login/"
+                  render={matchprops => (
+                     <Suspense fallback={<div>Loading ...</div>}>
+                        <LazySpotify {...matchprops} />
+                     </Suspense>
+                  )}
+               />
+
+               <MainLayoutRoutes
+                  exact
+                  path="/chat"
                   render={matchprops => (
                      <Suspense fallback={<div>Loading ...</div>}>
                         <LazyChat {...matchprops} />
                      </Suspense>
                   )}
                />
-               
+
                {/* Saperate Pages Views */}
                <FullPageLayout
                   exact

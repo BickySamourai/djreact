@@ -27,20 +27,19 @@ class SideMenuContent extends Component {
                </NavLink>
             </SideMenu.MenuSingleItem>
 
-            <SideMenu.MenuMultiItems
-               name="Playlistes"
-               badgeColor="success"
-               Icon={<Music size={18} />}
-               ArrowRight={<ChevronRight size={16} />}
-               collapsedSidebar={this.props.collapsedSidebar}
-            >
-               <NavLink to="/cards/basic-card" className="item" activeclassname="active">
-                  <span className="menu-item-text">Favoris</span>
+            <SideMenu.MenuSingleItem name="Spotify">
+               <NavLink to="/spotify/login/" activeclassname="active">
+                  <i className="menu-icon">
+                     <Home size={18} />
+                  </i>
+                  <span className="menu-item-text">Spotify</span>
                </NavLink>
-               <NavLink to="/cards/extended-card" className="item" activeclassname="active">
-                  <span className="menu-item-text">Playlist rap</span>
-               </NavLink>
-            </SideMenu.MenuMultiItems>
+            </SideMenu.MenuSingleItem>
+
+
+
+
+
 
             <SideMenu.MenuSingleItem>
                <NavLink to="/chat" activeClassName="active">
@@ -48,7 +47,7 @@ class SideMenuContent extends Component {
                      <MessageSquare size={18} />
                   </i>
                   <span className="menu-item-text">Chat</span>
-               </NavLink> 
+               </NavLink>
             </SideMenu.MenuSingleItem>
 
          </SideMenu>
