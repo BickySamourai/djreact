@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import {
    Home,
    MessageSquare,
+   ArrowUp,
    ChevronRight,
    Music
 } from "react-feather";
@@ -38,15 +39,22 @@ class SideMenuContent extends Component {
 
 
 
-
-
-
             <SideMenu.MenuSingleItem>
                <NavLink to="/chat" activeClassName="active">
                   <i className="menu-icon">
                      <MessageSquare size={18} />
                   </i>
                   <span className="menu-item-text">Chat</span>
+               </NavLink>
+            </SideMenu.MenuSingleItem>
+
+
+            <SideMenu.MenuSingleItem name="UploadMusic">
+               <NavLink to="/pages/upload" activeclassname="active">
+                  <i className="menu-icon">
+                     <ArrowUp size={18} />
+                  </i>
+                  <span className="menu-item-text">Télécharger</span>
                </NavLink>
             </SideMenu.MenuSingleItem>
 

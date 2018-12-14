@@ -1,6 +1,8 @@
 // import external modules
 import { combineReducers } from "redux";
 import reducer from './auth'
+import uploadReducer from './uploadReducer'
+
 // import internal(own) modules
 //import calenderReducer from "./calenderReducer";
 //import emailReducer from "./email/";
@@ -20,7 +22,8 @@ const rootReducer = combineReducers({
    //toastr: toastrReducer, // <- Mounted at toastr.
    //chatApp: chatReducer, 
    //customizer: customizer
-   reducer
+   reducer,
+   uploadReducer
 });
 
 export default rootReducer;

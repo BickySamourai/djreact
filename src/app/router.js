@@ -12,6 +12,8 @@ import ErrorLayoutRoute from "../layouts/routes/errorRoutes";
 const LazyHome = lazy(() => import("../views/home/home"));
 const LazyChat = lazy(() => import("../views/chat/chat"));
 const LazySpotify = lazy(() => import("../views/spotify/SpotifyContainer"));
+const LazyUploadPage = lazy(() => import("../views/pages/uploadMusic"));
+
 
 const LazyBlankPage = lazy(() => import("../views/pages/blankPage"));
 
@@ -88,6 +90,17 @@ class Router extends Component {
                      </Suspense>
                   )}
                />
+
+              <MainLayoutRoutes
+                exact
+                path="/pages/upload"
+                render={matchprops => (
+                  <Suspense fallback={<Spinner />}>
+                    <LazyUploadPage {...matchprops} />
+                  </Suspense>
+                )}
+              />
+
                {/* Calender */}
                <ErrorLayoutRoute
                   exact

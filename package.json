@@ -31,6 +31,7 @@
       "react-dom": "^16.6.0",
       "react-draft-wysiwyg": "^1.12.13",
       "react-dropzone": "^5.0.1",
+      "react-dropzone-component": "^3.2.0",
       "react-feather": "^1.1.1",
       "react-horizontal-timeline": "^1.5.3",
       "react-perfect-scrollbar": "^1.1.1",
@@ -52,6 +53,7 @@
       "redux-debounced": "^0.5.0",
       "redux-thunk": "^2.3.0",
       "simple-line-icons": "^2.4.1",
+      "spotify-web-api-js": "^1.1.1",
       "uuid": "^3.3.2",
       "yup": "^0.26.6"
    },
